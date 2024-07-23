@@ -26,7 +26,7 @@ else:
         print("Vyberte text napsáním čísla 1 až 3:")
         choice = input()
         
-        if choice not in ['1', '2', '3']:
+        if not choice.isdigit() or not (1<= int(choice) <=len(texts)):
             print("program se ukončuje z duvodu zadání nesprávného čísla")
         else:
             text = texts[int(choice) - 1]
@@ -34,8 +34,8 @@ else:
             
             words = text.split()
             pocet_slov = len(words)
-            pocet_slov_zacinajici_velkym_p = sum(1 for word in words if word.istitle())
-            pocet_slov_velkymi_p = sum(1 for word in words if word.isupper())
+            pocet_slov_zacinajici_velkym_p = sum(1 for word in words if word[0].isupper() and word[0].isalpha())
+            pocet_slov_velkymi_p = sum(1 for word in words if word.isupper() and word.isalpha())
             pocet_slov_malymi_p = sum(1 for word in words if word.islower())
             pocet_cisel = sum(1 for word in words if word.isdigit())
             soucet_vsech_cisel= sum(int(word) for word in words if word.isdigit())
@@ -46,9 +46,11 @@ else:
             print(f"počet slov mylými písmeny: {pocet_slov_malymi_p}")
             print(f"Počet čísel: {pocet_cisel}")
             print(f"součet všech čísel je: {soucet_vsech_cisel}")
+            
             word_lengths = {}
             for word in words:
-                length = len(word)
+                clean_word = ''.join(char for char in word if char.isalnum())
+                length=len(clean_word)
                 if length in word_lengths:
                     word_lengths[length] += 1
                 else:
@@ -56,7 +58,7 @@ else:
             
             print("Četnost délek slov:")
             for length in sorted(word_lengths):
-                print(f"{length}: {'#' * word_lengths[length]}{word_lengths[length]}")
+                print(f"{length}|{'*' * word_lengths[length]}|{word_lengths[length]}")
             
     else:
         print("zadané heslo je špatně program se ukoncí.")
